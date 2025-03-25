@@ -11,8 +11,11 @@ def validate_key(priv_key):
     wallet_name = 'test'
     pubkey = Key(priv_key)
     print(pubkey.address)
+    # test = Key(pubkey.address)
+    # print(f"Pub: {test.address}")
     return None
 
+#we must convert the wif to ex (hex format is the private key to import)
 
 # from bitcoinlib.keys import Key
 
