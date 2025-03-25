@@ -27,12 +27,11 @@ def extract_key_list (html):
     
     if script_found:
         match = re.search(r'(\[\s*\{.*?\}\s*\])', script_found.string, re.DOTALL)
-        print(match)
     
     if match:
         json_str = match.group(1)  # Extracted JSON array as a string
         key_list = json.loads(json_str)  # Convert to Python object
-        print(key_list)  # Output: [{'name': 'Alice', 'age': 25}, {'name': 'Bob', 'age': 30}]
+        # print(key_list)  # Output: [{'name': 'Alice', 'age': 25}, {'name': 'Bob', 'age': 30}]
         return key_list
     else:
         print("JSON array not found in script tag")
