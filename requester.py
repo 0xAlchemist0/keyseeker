@@ -12,29 +12,29 @@ def make_request(url):
 
 def get_number_pages(url, page_num):
     html = make_request(url + page_num)
-    
-    located_section = html.find_all('script')[0]
-    extract_array(located_section)
-
+    page_number_element = html.find('h1', class_='flex flex-col text-base break-words text-center')
+    pages = int(page_number_element.find_all('span')[3].text)
+    return pages
 
 #script has the array of keys
-def extract_array (script_text):
+def extract_key_list (html):
+    script_collection = html.find_all('script')
+    script_found = None
+    key_list = None
+    for script in script_collection:
+        if 'const keys = ' in script.text:
+            script_found = script
     
-    # soup = BeautifulSoup(html_doc, "html.parser")
-    # # locate the script, get the contents
-    # script_text = soup.select_one("script").contents[0]
-
-    # get javascript object inside the script
-    model_data = re.search(r"keys = ({.*?});", script_text, flags=re.S)
-    model_data = model_data.group(1)
-
-    # "convert" the javascript object to json-valid object
-    model_data = re.sub(
-        r"^\s*([^:\s]+):", r'"\1":', model_data.replace("'", '"'), flags=re.M
-    )
-
-    # json decode the object
-    model_data = json.loads(model_data)
-
-    # print the data
-    print(model_data)
+    if script_found:
+        match = re.search(r'(\[\s*\{.*?\}\s*\])', script_found.string, re.DOTALL)
+        print(match)
+    
+    if match:
+        json_str = match.group(1)  # Extracted JSON array as a string
+        key_list = json.loads(json_str)  # Convert to Python object
+        print(key_list)  # Output: [{'name': 'Alice', 'age': 25}, {'name': 'Bob', 'age': 30}]
+        return key_list
+    else:
+        print("JSON array not found in script tag")
+        return None
+    

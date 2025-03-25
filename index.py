@@ -1,17 +1,20 @@
 from actions.dissect_handler import dissect_keys
-from requester import get_number_pages, make_request
+from requester import extract_key_list, get_number_pages, make_request
 
 
-def commence_process(url, page_num):
-    is_valid = url_checker(url)
+def commence_process(base_url, page_num):
+    is_valid = url_checker(base_url)
     
     if (not is_valid):
         return None
     
-    pages = get_number_pages(url, str(page_num))
-    
-    # for index in range(0, pages):
-    #     return None
+    pages = get_number_pages(base_url, str(page_num))
+    print(type(pages))
+    for index in range(1, 3):
+        html = make_request(base_url + str(index))
+        key_list = extract_key_list(html)
+        
+        
        
     return None
 
