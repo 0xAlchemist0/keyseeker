@@ -1,5 +1,4 @@
-from actions.dissect_handler import dissect_keys
-from actions.key_validator import validate_list
+from actions.key_validator import analyze_list
 from requester import extract_key_list, get_number_pages, make_request
 
 
@@ -10,11 +9,10 @@ def commence_process(base_url, page_num):
         return None
     
     pages = get_number_pages(base_url, str(page_num))
-    print(type(pages))
     for index in range(1, 3):
         html = make_request(base_url + str(index))
         key_list = extract_key_list(html)
-        validate_list(key_list)
+        analyze_list(key_list)
         
        
     return None
