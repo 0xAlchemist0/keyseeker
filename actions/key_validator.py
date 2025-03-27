@@ -6,14 +6,21 @@ from actions.conv import wif_to_private_key
 
 #wif is the private key
 def analyze_list(key_list):
+    extracted = []
     # validate_key(key_list[0]['wif'])
     for index, item in enumerate(key_list):
        current_private_key = wif_to_private_key(item['wif']) 
        print(f"#{index}: {current_private_key}")
        pub_key = get_pub_key(current_private_key)
-       check_balance(pub_key)
+       balance = check_balance(pub_key)
+       if(balance > 0):
+           extracted.append({
+               "priv": current_private_key,
+               "pub_key": pub_key,
+               "balance": balance
+           })
        
-    return None
+    return extracted
 
 def validate_key(priv_key):
     wallet_name = 'test'
@@ -32,6 +39,7 @@ def get_pub_key(priv_key):
 def check_balance(pub_key):
     service = Service(network='bitcoin')
     print(f"Balance: {service.getbalance(pub_key)}")
+    print(type(service.getbalance(pub_key)))
     return None
     
 

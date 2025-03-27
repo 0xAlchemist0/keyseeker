@@ -1,21 +1,25 @@
+
 from actions.key_validator import analyze_list
 from requester import extract_key_list, get_number_pages, make_request
 
 
 def commence_process(base_url, page_num):
     is_valid = url_checker(base_url)
-    
     if (not is_valid):
         return None
     
     pages = get_number_pages(base_url, str(page_num))
-    for index in range(1, 3):
+    print(f"Pages: {pages}")
+    for index in range(1, pages):
         html = make_request(base_url + str(index))
         key_list = extract_key_list(html)
-        analyze_list(key_list)
+        analysis = analyze_list(key_list)
         
+        #handle writing hits to file
+    
        
     return None
+
 
 
 def url_checker(url):
